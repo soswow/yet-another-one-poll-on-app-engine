@@ -1,0 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <title>Edit Answer</title>
+</head>
+<body>
+<form action="{% url polls.views.save_answer %}" method="POST">
+<input type="hidden" name="id" value="{{ answer.key.id }}" />
+<label for="answer">
+    Answer:
+    <input type="text" name="text" id="answer" value="{{ answer.text }}"/>
+</label><br/>
+<label for="more_link">
+    Link:
+    <input type="text" name="more_link" id="more_link" value="{{ answer.more_link }}"/>
+</label><br/>
+<input type="image" src="/static/images/save.png" />
+</form>
+</body>
+</html>
