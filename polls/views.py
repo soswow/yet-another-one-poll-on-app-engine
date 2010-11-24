@@ -80,6 +80,7 @@ def delete_answer(request, answer_id):
     return redirect("polls.views.main_page")
 
 def edit_answer(request, answer_id):
+    _check_for_admin()
     answer = _get_answer_by_id(answer_id)
     return render_to_response('edit_answer.html',
                               {'answer':answer},
