@@ -29,9 +29,8 @@ $(function(){
     <form action="{% url polls.views.save_user_choice %}" method="POST">
         <ul>
         {% for answer in answers %}
-            <li><input type="checkbox" value="{{ answer.key.id }}" name="chooses" {% if answer.key in user_answer_keys %}checked="checked" {% endif %} />
-                <div class="text">{{ answer.text }}</div>
-            (<a href="{{ answer.more_link }}">Ссылко</a>)
+            <li><input class="choose" id="chooseId{{ answer.key.id }}" type="checkbox" value="{{ answer.key.id }}" name="chooses" {% if answer.key in user_answer_keys %}checked="checked" {% endif %} />
+                <label class="text" for="chooseId{{ answer.key.id }}" >{{ answer.text }} (<a href="{{ answer.more_link }}">Ссылко</a>)</label>
             {% if is_admin %}
                 <a href="{% url polls.views.delete_answer answer.key.id  %}"><img src="/static/images/cancel.png" alt="Delete answer"/></a>
                 <a href="{% url polls.views.edit_answer answer.key.id  %}"><img src="/static/images/edit.png" alt="Edit answer"/></a>

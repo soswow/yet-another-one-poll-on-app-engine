@@ -48,7 +48,7 @@ def save_user_choice(request):
         user_choose.answers = [a.key() for a in answers]
         user_choose.save()
         
-    return redirect("polls.views.main_page")
+    return redirect("polls.views.thank_you")
 
 def get_question():
     questions = Question.all()
@@ -101,3 +101,6 @@ def _check_for_admin():
 def _get_answer_by_id(answer_id):
     answer = Answer.get_by_id(int(answer_id))
     return answer
+
+def thank_you(request):
+    return render_to_response('thankyou.html', {}, context_instance=RequestContext(request))
