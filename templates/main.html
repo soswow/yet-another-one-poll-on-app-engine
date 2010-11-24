@@ -18,6 +18,9 @@ $(function(){
 <a href="{{ log_out_link }}" id="logout">Logout</a>
 <div id="container">
     <h1>Голосование по темам на девклаб</h1>
+    {% if is_admin %}
+        <a href="{% url polls.views.statistics %}">Статистика!</a>
+    {% endif %}
     <form action="" method="POST">
         {% if is_admin %}
             <textarea name="answer_name">{{ question.text }}</textarea>
@@ -40,20 +43,20 @@ $(function(){
         </ul>
         <button>Ответить!</button>
     </form>
+    {% if is_admin %}
+        <hr/>
+        <form action="{% url polls.views.add_new_answer %}" method="POST">
+        <label for="new_answer">
+            Answer:
+            <input type="text" name="new_answer" id="new_answer"/>
+        </label><br/>
+        <label for="new_link">
+            Link:
+            <input type="text" name="new_link" id="new_link"/>
+        </label><br/>
+        <input type="image" src="/static/images/add.png" />
+        </form>
+    {% endif %}
 </div>
-{% if is_admin %}
-    <hr/>
-    <form action="{% url polls.views.add_new_answer %}" method="POST">
-    <label for="new_answer">
-        Answer:
-        <input type="text" name="new_answer" id="new_answer"/>
-    </label><br/>
-    <label for="new_link">
-        Link:
-        <input type="text" name="new_link" id="new_link"/>
-    </label><br/>
-    <input type="image" src="/static/images/add.png" />
-    </form>
-{% endif %}
 </body>
 </html>

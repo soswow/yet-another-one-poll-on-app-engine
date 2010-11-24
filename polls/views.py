@@ -104,3 +104,17 @@ def _get_answer_by_id(answer_id):
 
 def thank_you(request):
     return render_to_response('thankyou.html', {}, context_instance=RequestContext(request))
+
+def statistics(request):
+    _check_for_admin()
+    question = get_question()
+    chooses = question.chooses
+    answers = dict((ans.key().id(), {"answer":ans, "count": 0}) for ans in question.answers)
+
+    for choose in chooses:
+        for answer in Answer.get(choose.answers):
+            answers[answer.key().id()]["count"] += 1
+
+    return render_to_response('statistics.html', {
+            'answers':sorted(answers.items(), key=lambda a:a[1]["count"], reverse=True)
+        }, context_instance=RequestContext(request))
