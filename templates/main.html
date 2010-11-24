@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link type="text/css" rel="stylesheet" href="/static/style.css"/>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
 <script type="text/javascript">
 $(function(){
@@ -14,32 +15,33 @@ $(function(){
 </script>
 </head>
 <body>
-{% if user %}
-Hello, {{ user.nickname }}. <a href="{{ log_out_link }}">Logout</a>.<br/>
-{% endif %}
-<form action="" method="POST">
-    {% if is_admin %}
-        <textarea name="answer_name">{{ question.text }}</textarea>
-        <input type="image" src="/static/images/save.png" />
-    {% else %}
-        {{ question.text }}<br/>
-    {% endif %}
-</form>
-<form action="{% url polls.views.save_user_choice %}" method="POST">
-    <ul>
-    {% for answer in answers %}
-        <li><input type="checkbox" value="{{ answer.key.id }}" name="chooses" {% if answer.key in user_answer_keys %}checked="checked" {% endif %} /> {{ answer.text }}
-        (<a href="{{ answer.more_link }}">Ссылко</a>)
+<a href="{{ log_out_link }}" id="logout">Logout</a>
+<div id="container">
+    <h1>Голосование по темам на девклаб</h1>
+    <form action="" method="POST">
         {% if is_admin %}
-            <a href="{% url polls.views.delete_answer answer.key.id  %}"><img src="/static/images/cancel.png" alt="Delete answer"/></a>
-            <a href="{% url polls.views.edit_answer answer.key.id  %}"><img src="/static/images/edit.png" alt="Edit answer"/></a>
+            <textarea name="answer_name">{{ question.text }}</textarea>
+            <input type="image" src="/static/images/save.png" />
+        {% else %}
+            {{ question.text }}<br/>
         {% endif %}
-        </li>
-    {% endfor %}
-    </ul>
-    <button>Ответить!</button>
-</form>
-
+    </form>
+    <form action="{% url polls.views.save_user_choice %}" method="POST">
+        <ul>
+        {% for answer in answers %}
+            <li><input type="checkbox" value="{{ answer.key.id }}" name="chooses" {% if answer.key in user_answer_keys %}checked="checked" {% endif %} />
+                <div class="text">{{ answer.text }}</div>
+            (<a href="{{ answer.more_link }}">Ссылко</a>)
+            {% if is_admin %}
+                <a href="{% url polls.views.delete_answer answer.key.id  %}"><img src="/static/images/cancel.png" alt="Delete answer"/></a>
+                <a href="{% url polls.views.edit_answer answer.key.id  %}"><img src="/static/images/edit.png" alt="Edit answer"/></a>
+            {% endif %}
+            </li>
+        {% endfor %}
+        </ul>
+        <button>Ответить!</button>
+    </form>
+</div>
 {% if is_admin %}
     <hr/>
     <form action="{% url polls.views.add_new_answer %}" method="POST">

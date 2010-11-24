@@ -1,0 +1,45 @@
+#logout{
+    float:right;
+}
+
+body,html{
+    height:100%;
+    margin:0;
+    background: -webkit-gradient(linear, 0% 100%, 0% 0%, from(#CFCFCF), color-stop(0.72, white));
+}
+
+#container{
+    width:700px;
+    height:100%;
+    margin:0 auto;
+    background: #fff;
+    border:3px solid #ccc;
+    padding:0 15px;
+    border-top:0;
+    border-bottom:0;    
+}
+
+h1{
+    font-family:Georgia,serif;
+    text-shadow: gray 1px 1px 2px;
+    margin-top:0;
+    padding-top:25px;
+    text-align:center;
+}
+
+UL, UL LI{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+UL{
+    margin:25px 0;
+}
+
+UL LI{
+    padding-left:20px;
+}
+UL LI DIV.text{
+    padding-left:10px;
+}
+UL LI
