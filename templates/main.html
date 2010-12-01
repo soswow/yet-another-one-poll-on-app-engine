@@ -15,7 +15,7 @@ $(function(){
 </script>
 </head>
 <body>
-<a href="{{ log_out_link }}" id="logout">Logout</a>
+
 <div id="container">
     <h1>Голосование по темам на девклаб</h1>
     {% if is_admin %}
@@ -30,6 +30,12 @@ $(function(){
         {% endif %}
     </form>
     <form action="{% url polls.views.save_user_choice %}" method="POST">
+        {% if not user %}
+            <label for="username">Your name: <input type="text" name="username" id="username" /> OR Login with
+            {% for name, url in login_urls_map.items %}<a href="{{ url }}">{{ name }}</a></label> {% endfor %}
+        {% else %}
+            <a href="{{ logout_url }}">Log out</a>
+        {% endif %}
         <ul>
         {% for answer in answers %}
             <li><input class="choose" id="chooseId{{ answer.key.id }}" type="checkbox" value="{{ answer.key.id }}" name="chooses" {% if answer.key in user_answer_keys %}checked="checked" {% endif %} />

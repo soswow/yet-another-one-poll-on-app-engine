@@ -17,5 +17,6 @@ class Answer(BaseModel):
 class Choose(BaseModel):
     question = db.ReferenceProperty(Question, collection_name="chooses")
     answers = db.ListProperty(item_type=db.Key)
-    user = db.UserProperty(auto_current_user_add=True)
+    username = db.StringProperty()
+    user = db.UserProperty(auto_current_user=True)
     when = db.DateTimeProperty(auto_now_add=True)
