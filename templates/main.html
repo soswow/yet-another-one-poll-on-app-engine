@@ -11,6 +11,20 @@ $(function(){
             return false;
         }
     });
+    $("#userForm").submit(function(){
+       var input = $("#username:visible");
+       if(input.length > 0){
+           if ($.trim(input.val()) == ""){
+               alert("Give me the Username, plaese!");
+               input.focus();
+               return false;
+           }
+       }
+       if($("input[name=chooses]:checked").length == 0){
+           alert("Please, select at least one checkbox.");
+           return false;
+       }
+    });
 });
 </script>
 </head>
@@ -29,7 +43,7 @@ $(function(){
             {{ question.text }}<br/>
         {% endif %}
     </form>
-    <form action="{% url polls.views.save_user_choice %}" method="POST">
+    <form id="userForm" action="{% url polls.views.save_user_choice %}" method="POST">
         {% if not user %}
             <label for="username">Your name: <input type="text" name="username" id="username" /> OR Login with
             {% for name, url in login_urls_map.items %}<a href="{{ url }}">{{ name }}</a></label> {% endfor %}
