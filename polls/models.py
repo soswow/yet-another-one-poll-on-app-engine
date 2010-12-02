@@ -8,6 +8,7 @@ class Question(BaseModel):
 
 class Answer(BaseModel):
     text = db.StringProperty()
+    date = db.DateProperty()
     question = db.ReferenceProperty(Question, collection_name="answers")
     more_link = db.LinkProperty()
 

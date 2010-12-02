@@ -8,6 +8,11 @@ $(function(){
             return false;
         }
     });
+    $(".askBeforeDo").click(function(){
+       if(!confirm("А вы уверены?")){
+           return false;
+       }
+    });
     $("#userForm").submit(function(){
        var input = $("#username:visible");
        if(input.length > 0){
@@ -37,12 +42,12 @@ $(function(){
             <textarea name="answer_name">{{ question.text }}</textarea>
             <input type="image" src="/static/images/save.png" />
         {% else %}
-            {{ question.text }}<br/>
+            <span style="font-size:1.2em;">{{ question.text }}</span><br/><br/>
         {% endif %}
     </form>
     <form id="userForm" action="{% url polls.views.save_user_choice %}" method="POST">
         {% if not user %}
-            <label for="username">Ваше имя: <input type="text" name="username" id="username" /> ИЛИ Залогинься через
+            <label for="username">Ваше имя: <input type="text" name="username" id="username" /> ИЛИ Авторизоваться через
             {% for name, url in login_urls_map.items %}<a href="{{ url }}">{{ name }}</a></label> {% endfor %}
         {% else %}
             <a href="{{ logout_url }}">Вылогиниться</a>
@@ -50,15 +55,16 @@ $(function(){
         <ul>
         {% for answer in answers %}
             <li><input class="choose" id="chooseId{{ answer.key.id }}" type="checkbox" value="{{ answer.key.id }}" name="chooses" {% if answer.key in user_answer_keys %}checked="checked" {% endif %} />
-                <label class="text" for="chooseId{{ answer.key.id }}" >{{ answer.text }} (<a href="{{ answer.more_link }}" target="_blank">Ссылко</a>)</label>
+                <label class="text" for="chooseId{{ answer.key.id }}" >{{ answer.text }} ({{ answer.date|date:'d.m.Y'|default:'неизвестно' }}) (<a href="{{ answer.more_link }}" target="_blank">Ссылко</a>)</label>
             {% if is_admin %}
-                <a href="{% url polls.views.delete_answer answer.key.id  %}"><img src="/static/images/cancel.png" alt="Delete answer"/></a>
+                <a href="{% url polls.views.delete_answer answer.key.id  %}" class="askBeforeDo"><img src="/static/images/cancel.png" alt="Delete answer"/></a>
                 <a href="{% url polls.views.edit_answer answer.key.id  %}"><img src="/static/images/edit.png" alt="Edit answer"/></a>
             {% endif %}
             </li>
         {% endfor %}
         </ul>
         <button>Голосуй!</button>
+        <br/><br/>
     </form>
     {% if is_admin %}
         <hr/>
@@ -70,6 +76,10 @@ $(function(){
         <label for="new_link">
             Link:
             <input type="text" name="new_link" id="new_link"/>
+        </label><br/>
+        <label for="new_link">
+            Date:
+            <input type="text" name="date" id="date"/> (дд.мм.гггг)
         </label><br/>
         <input type="image" src="/static/images/add.png" />
         </form>

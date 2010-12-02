@@ -4,6 +4,7 @@ from google.appengine.api import users
 from forms import PollForm, AnswerForm
 from models import Choose, Question, Answer
 from django.http import HttpResponseNotAllowed
+from datetime import datetime
 
 openIdProviders = (
     'Gmail.com', # shorter alternative: "Gmail.com"
@@ -39,8 +40,12 @@ def main_page(request):
         p_name = p.split('.')[0]
         p_url = p.lower()
         urlmap[p_name] = users.create_login_url(federated_identity=p_url, dest_url="/")
-
-    answers = question.answers
+    nulldate = datetime(1970, 1, 1).date()
+    answers = question.answers.fetch(1000)
+    def date_cmp(a,b):
+        a,b = a.date or nulldate, b.date or nulldate
+        return 1 if a > b else -1 if a < b else 0
+    answers.sort(cmp=date_cmp)
     user = users.get_current_user()
     user_answer_keys = []
     if user:
@@ -96,11 +101,13 @@ def add_new_answer(request):
     if post:
         new_answer = post["new_answer"]
         new_link = post["new_link"]
+        new_date = datetime.strptime(post["date"], "%d.%m.%Y").date()
         new_question = get_question()
         answer = Answer()
         answer.text=new_answer
         answer.more_link = new_link
         answer.question=new_question
+        answer.date = new_date
         answer.save()
     return redirect("polls.views.main_page")
 
@@ -123,6 +130,7 @@ def save_answer(request):
         answer = _get_answer_by_id(post["id"])
         answer.text = post["text"]
         answer.more_link = post["more_link"]
+        answer.date = datetime.strptime(post["date"], "%d.%m.%Y").date()
         answer.save()
     return redirect("polls.views.main_page")
 

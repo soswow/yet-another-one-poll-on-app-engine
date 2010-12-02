@@ -12,6 +12,10 @@
     Link:
     <input type="text" name="more_link" id="more_link" value="{{ answer.more_link }}"/>
 </label><br/>
+<label for="new_link">
+        Date:
+        <input type="text" name="date" id="date" value="{{ answer.date|date:'d.m.Y' }}"/>
+    </label><br/>
 <input type="image" src="/static/images/save.png" />
 </form>
 {% endblock %}
