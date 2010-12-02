@@ -1,13 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<link type="text/css" rel="stylesheet" href="/static/style.css"/>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+{% extends "base.html" %}
+{% block head %}
 <script type="text/javascript">
 $(function(){
     $("input[name=chooses]").click(function(){
         var num = $("input[name=chooses]:checked").length;
-        if(num > 3){
+        if(num > 5){
             return false;
         }
     });
@@ -15,23 +12,23 @@ $(function(){
        var input = $("#username:visible");
        if(input.length > 0){
            if ($.trim(input.val()) == ""){
-               alert("Give me the Username, plaese!");
+               alert("Укажите имя плиз.");
                input.focus();
                return false;
            }
        }
        if($("input[name=chooses]:checked").length == 0){
-           alert("Please, select at least one checkbox.");
+           alert("Плиз, выберете хоть один доклад.");
            return false;
        }
     });
 });
 </script>
-</head>
-<body>
+{% endblock %}
 
+{% block body %}
 <div id="container">
-    <h1>Голосование по темам на девклаб</h1>
+    <h1>Голосование за лучший доклад на девклабе</h1>
     {% if is_admin %}
         <a href="{% url polls.views.statistics %}">Статистика!</a>
     {% endif %}
@@ -45,15 +42,15 @@ $(function(){
     </form>
     <form id="userForm" action="{% url polls.views.save_user_choice %}" method="POST">
         {% if not user %}
-            <label for="username">Your name: <input type="text" name="username" id="username" /> OR Login with
+            <label for="username">Ваше имя: <input type="text" name="username" id="username" /> ИЛИ Залогинься через
             {% for name, url in login_urls_map.items %}<a href="{{ url }}">{{ name }}</a></label> {% endfor %}
         {% else %}
-            <a href="{{ logout_url }}">Log out</a>
+            <a href="{{ logout_url }}">Вылогиниться</a>
         {% endif %}
         <ul>
         {% for answer in answers %}
             <li><input class="choose" id="chooseId{{ answer.key.id }}" type="checkbox" value="{{ answer.key.id }}" name="chooses" {% if answer.key in user_answer_keys %}checked="checked" {% endif %} />
-                <label class="text" for="chooseId{{ answer.key.id }}" >{{ answer.text }} (<a href="{{ answer.more_link }}">Ссылко</a>)</label>
+                <label class="text" for="chooseId{{ answer.key.id }}" >{{ answer.text }} (<a href="{{ answer.more_link }}" target="_blank">Ссылко</a>)</label>
             {% if is_admin %}
                 <a href="{% url polls.views.delete_answer answer.key.id  %}"><img src="/static/images/cancel.png" alt="Delete answer"/></a>
                 <a href="{% url polls.views.edit_answer answer.key.id  %}"><img src="/static/images/edit.png" alt="Edit answer"/></a>
@@ -61,7 +58,7 @@ $(function(){
             </li>
         {% endfor %}
         </ul>
-        <button>Ответить!</button>
+        <button>Голосуй!</button>
     </form>
     {% if is_admin %}
         <hr/>
@@ -78,5 +75,4 @@ $(function(){
         </form>
     {% endif %}
 </div>
-</body>
-</html>
+{% endblock %}

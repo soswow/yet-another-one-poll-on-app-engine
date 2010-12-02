@@ -1,12 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-    <title>Statistics</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block head %}
+    <title>Статистика</title>
+{% endblock %}
+{% block body %}
 {% for ans, tup in answers %}
 {{ tup.count }} -- {{ tup.answer.text }}<br/>
 {% endfor %}
-</body>
-</html>
+{% endblock %}

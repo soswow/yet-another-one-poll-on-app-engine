@@ -1,10 +1,7 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-  "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-  <title>Edit Answer</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block head %}<title>Edit Answer</title>{% endblock %}
+
+{% block body %}
 <form action="{% url polls.views.save_answer %}" method="POST">
 <input type="hidden" name="id" value="{{ answer.key.id }}" />
 <label for="answer">
@@ -17,5 +14,4 @@
 </label><br/>
 <input type="image" src="/static/images/save.png" />
 </form>
-</body>
-</html>
+{% endblock %}
