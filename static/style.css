@@ -62,3 +62,9 @@ UL LI .choose{
     font-size:48pt;
     padding-top:100px;
 }
+
+.usersDetails{
+    display:none;
+    background:white;
+    margin-left:15px;
+}

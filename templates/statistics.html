@@ -1,9 +1,27 @@
 {% extends "base.html" %}
 {% block head %}
     <title>Статистика</title>
+    <script type="text/javascript">
+    $(function(){
+        $(".moreInfo").click(function(){
+            $(this).parents("LI").eq(0).find(".usersDetails").toggle(); 
+        });
+    });
+    </script>
 {% endblock %}
 {% block body %}
+<ul>
 {% for ans, tup in answers %}
-{{ tup.count }} -- {{ tup.answer.text }}<br/>
+    <li>{{ tup.count }} -- {{ tup.answer.text }} <img src="/static/images/user.png" alt="" class="moreInfo"/>
+        <table class="usersDetails" cellpadding="2" cellspacing="2">
+        {% for choose in tup.chooses %}
+            <tr>
+                <td>{{ choose.user|default:choose.username}}</td>
+                <td>{{ choose.when|date:"d.m.Y H:i" }}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </li>
 {% endfor %}
+</ul>
 {% endblock %}

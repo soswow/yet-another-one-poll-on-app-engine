@@ -149,11 +149,16 @@ def statistics(request):
     _check_for_admin()
     question = get_question()
     chooses = question.chooses
-    answers = dict((ans.key().id(), {"answer":ans, "count": 0}) for ans in question.answers)
+    answers = dict((ans.key().id(), {"answer":ans, "count": 0, "chooses":[]}) for ans in question.answers)
 
     for choose in chooses:
         for answer in Answer.get(choose.answers):
-            answers[answer.key().id()]["count"] += 1
+            if answer:
+                key = answer.key()
+                id = key.id()
+                answers[id]["count"] += 1
+                answer = Answer.get(key)
+                answers[id]["chooses"] = Choose.gql("where answers = :1 order by when", answer).fetch(200)
 
     return render_to_response('statistics.html', {
             'answers':sorted(answers.items(), key=lambda a:a[1]["count"], reverse=True)
